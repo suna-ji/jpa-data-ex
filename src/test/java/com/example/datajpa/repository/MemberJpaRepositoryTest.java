@@ -1,6 +1,7 @@
 package com.example.datajpa.repository;
 
 import com.example.datajpa.entity.Member;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,8 @@ class MemberJpaRepositoryTest {
 
     @Autowired
     MemberJpaRepository memberJpaRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     public void testMember() {
@@ -57,4 +60,22 @@ class MemberJpaRepositoryTest {
         assertThat(deletedCount).isEqualTo(0);
 
     }
+
+    @Test
+    @DisplayName("이름과 나이로 조회하는 로직 검증")
+    public void findByUsernameAndAgeCreaterThen() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("AAA", 20);
+
+//        memberJpaRepository.save(member1);
+//        memberJpaRepository.save(member2);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+//        List<Member> findMember = memberJpaRepository.findByUsernameAndAgeCreaterThan("AAA", 15);
+        List<Member> findMember = memberRepository.findByUsernameAndAgeGreaterThan("AAA", 15);
+        assertThat(findMember.get(0).getUsername()).isEqualTo("AAA");
+        assertThat(findMember.get(0).getAge()).isEqualTo(20);
+    }
+
 }
