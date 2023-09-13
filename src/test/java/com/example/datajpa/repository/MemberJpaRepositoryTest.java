@@ -1,6 +1,8 @@
 package com.example.datajpa.repository;
 
+import com.example.datajpa.dto.MemberDto;
 import com.example.datajpa.entity.Member;
+import com.example.datajpa.entity.Team;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ class MemberJpaRepositoryTest {
     MemberJpaRepository memberJpaRepository;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     public void testMember() {
@@ -87,6 +91,32 @@ class MemberJpaRepositoryTest {
         List<Member> findMember = memberRepository.findUser("AAA", 10);
         assertThat(findMember.get(0)).isEqualTo(member1);
 
+    }
+
+    @Test
+    public void testFindUsername() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("AAA", 20);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        List<String> userNames = memberRepository.findUsername();
+        assertThat(userNames.size()).isEqualTo(2);
+
+    }
+
+    @Test
+    public void findMemberDto() {
+        Team team = new Team("team1");
+        teamRepository.save(team);
+        Member member = new Member("AAA", 20, team);
+        memberRepository.save(member);
+
+        List<MemberDto> findMemberDto = memberRepository.findMemberDto();
+        for (MemberDto memberDto : findMemberDto) {
+            System.out.println("member id : " + memberDto.getId());
+            System.out.println("member name : " + memberDto.getUsername());
+            System.out.println("team name : " + memberDto.getTeamName());
+        }
     }
 
 }
