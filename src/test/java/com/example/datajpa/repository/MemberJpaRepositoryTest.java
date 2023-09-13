@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,6 +119,17 @@ class MemberJpaRepositoryTest {
             System.out.println("member name : " + memberDto.getUsername());
             System.out.println("team name : " + memberDto.getTeamName());
         }
+    }
+
+    @Test
+    public void testFindByNames() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("AAA", 20);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        List<Member> members = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
+        assertThat(members.size()).isEqualTo(2);
+
     }
 
 }
