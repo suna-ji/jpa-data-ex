@@ -129,6 +129,16 @@ class MemberJpaRepositoryTest {
         memberRepository.save(member2);
         List<Member> members = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
         assertThat(members.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void returnType() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("AAA", 20);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        List<Member> aaa = memberRepository.findListByUsername("AAA");
+        assertThat(aaa.size()).isEqualTo(2);
 
     }
 
